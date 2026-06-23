@@ -51,5 +51,22 @@ Feature importance analysis and tree visualization revealed that the models simp
 
 ---
 Future enhancements include model deployment using Streamlit, evaluation on real-world placement datasets, and comparison with advanced ensemble methods such as Gradient Boosting and XGBoost.
+---
+## API Deployment (In Progress)
+
+A FastAPI-based inference service has been developed to serve real-time placement predictions.
+
+Current Features:
+- FastAPI REST API
+- Pydantic request validation
+- Logistic Regression model loading via Joblib
+- Feature transformation and scaling
+- Real-time prediction endpoint
+
+Features to add:
+- PostgreSQL prediction logging
+- Docker containerization
+- Render deployment
+- GitHub Actions CI/CD
 
 ### Author : `Vineeth Naik`
