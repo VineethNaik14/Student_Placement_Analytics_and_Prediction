@@ -17,17 +17,17 @@ class StudentInput(BaseModel):
 
     cgpa: float = Field(..., ge=0, le=10)
 
-    internships: int = Field(..., ge=0, le=20)
-    projects: int = Field(..., ge=0, le=100)
+    internships: int = Field(..., ge=0)
+    projects: int = Field(..., ge=0)
 
-    coding_skills: float = Field(..., ge=0, le=100)
-    communication_skills: float = Field(..., ge=0, le=100)
+    coding_skills: float = Field(..., ge=0, le=10)
+    communication_skills: float = Field(..., ge=0, le=10)
     aptitude_test_score: float = Field(..., ge=0, le=100)
 
-    soft_skills_rating: float = Field(..., ge=0, le=5)
+    soft_skills_rating: float = Field(..., ge=0, le=10)
 
-    certifications: int = Field(..., ge=0, le=50)
-    backlogs: int = Field(..., ge=0, le=20)
+    certifications: int = Field(..., ge=0)
+    backlogs: int = Field(..., ge=0)
 
     degree: str
     branch: str
@@ -132,4 +132,3 @@ def predict(student: StudentInput):
         "prediction": prediction_label,
         "placement_probability": round(float(probability), 4),
     }
-
