@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import joblib
 import numpy as np
+from database import get_connection
 
 app = FastAPI()
 model = joblib.load("models/logistic_regression.joblib")
@@ -26,6 +27,28 @@ class StudentInput(BaseModel):
 
     degree: str
     branch: str
+
+
+def save_prediction(prediction, probability):
+
+    connection = get_connection()
+
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO predictions
+        (prediction, probability)
+        VALUES
+        (%s, %s)
+        """,
+        (prediction, probability),
+    )
+
+    connection.commit()
+
+    cursor.close()
+    connection.close()
 
 
 class PredictionResponse(BaseModel):
@@ -96,6 +119,8 @@ def predict(student: StudentInput):
     probability = model.predict_proba(features_scaled)[0].max()
 
     prediction_label = "Placed" if prediction == 1 else "Not Placed"
+
+    save_prediction(prediction_label, float(probability))
 
     return {
         "prediction": prediction_label,
