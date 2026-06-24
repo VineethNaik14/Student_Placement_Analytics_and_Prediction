@@ -1,72 +1,337 @@
 # Student Placement Analytics and Prediction
 
-### A machine learning classification project that predicts campus placement outcomes based on academic performance, technical skills, certifications, internships, and project experience.
+A machine learning-powered placement prediction system that estimates a student's placement probability based on academic performance, technical skills, certifications, internships, and projects. The project includes a deployed REST API, cloud database integration, Docker containerization, and real-time prediction logging.
 
 ---
-### Dataset
 
-* **Source:** [Kaggle Student Placement Dataset](https://www.kaggle.com/datasets/sonalshinde123/student-placement-dataset)
-* **Size:** 45,000 records, 15 features
-* **Note:** This is a synthetic dataset generated using predefined logical patterns rather than real-world records.
+## Live Demo
 
----
-### Exploratory Data Analysis
+### API Endpoint
 
-* **Positive Indicators:** Aptitude test scores, coding skills, and number of projects showed the strongest positive correlation with placement.
-* **Negative Indicators:** Number of backlogs significantly reduced placement probability.
-* **Negligible Impact:** Age and gender showed no meaningful variance between placed and unplaced students.
+https://placement-prediction-api-jw00.onrender.com
 
----
-### Preprocessing
+### Swagger Documentation
 
-* Dropped `Student_ID` (non-predictive identifier).
-* Label Encoding applied to `Gender`.
-* One-Hot Encoding applied to `Degree` and `Branch`.
-* Applied `StandardScaler` for Logistic Regression.
-* Train/Test split: 80/20.
+https://placement-prediction-api-jw00.onrender.com/docs
+
+![Swagger UI](images/swagger-ui.png)
+
+
 
 ---
-### Model Performance
 
-| Model | Accuracy |
-| --- | --- |
-| Logistic Regression | 86.47% |
-| Decision Tree | 100.00% |
-| Random Forest | 100.00% |
+## Overview
+
+This project predicts whether a student is likely to be placed during campus recruitment using machine learning techniques.
+
+The project evolved from a traditional machine learning workflow into a production-style deployment featuring:
+
+* Machine Learning Model Training
+* FastAPI REST API
+* Input Validation using Pydantic
+* PostgreSQL Prediction Logging
+* Docker Containerization
+* Cloud Deployment on Render
+* Cloud PostgreSQL Database using Neon
 
 ---
-### Technical Note on Accuracy
 
-The tree-based models (Decision Tree, Random Forest) achieved perfect 100% accuracy, which was verified using 5-fold cross-validation.
+## Dataset [Kaggle](https://www.kaggle.com/datasets/sonalshinde123/student-placement-dataset)
 
-Feature importance analysis and tree visualization revealed that the models simply extracted the exact mathematical rules used to generate this synthetic dataset (primarily evaluating projects, coding skills, and backlogs). Because real-world placement data contains human variance and unpredictability, the 86.47% accuracy from the Logistic Regression model serves as a more realistic baseline for this type of classification problem.
+**Source:** Kaggle Student Placement Dataset
+
+**Size:** 45,000 Records
+
+**Features:** 15 Attributes
+
+**Note:** This dataset is synthetic and generated using predefined logical patterns rather than real-world placement records.
 
 ---
-### Tech Stack
 
-* Python, Pandas
+## Exploratory Data Analysis
+
+### Strong Positive Indicators
+
+* Aptitude Test Score
+* Coding Skills
+* Number of Projects
+
+These features showed the strongest positive relationship with placement outcomes.
+
+### Strong Negative Indicator
+
+* Number of Backlogs
+
+Students with higher backlog counts showed significantly lower placement probabilities.
+
+### Minimal Impact Features
+
+* Age
+* Gender
+
+These variables demonstrated little influence on placement outcomes.
+
+![Correlation Heatmap](images/correlation-heatmap.png)
+
+---
+
+## Data Preprocessing
+
+* Removed `Student_ID`
+* Label Encoding for `Gender`
+* One-Hot Encoding for `Degree`
+* One-Hot Encoding for `Branch`
+* Feature Scaling using `StandardScaler`
+* Train/Test Split: 80/20
+
+---
+
+## Model Performance
+
+| Model               | Accuracy |
+| ------------------- | -------- |
+| Logistic Regression | 86.47%   |
+| Decision Tree       | 100.00%  |
+| Random Forest       | 100.00%  |
+
+---
+
+## Note on Accuracy
+
+The Decision Tree and Random Forest models achieved perfect accuracy because the dataset is synthetic and generated using predefined logical rules.
+
+Feature importance analysis and tree visualization showed that the models effectively learned the exact placement-generation logic embedded within the dataset.
+
+To provide a more realistic benchmark, Logistic Regression was selected for deployment. The model achieved an accuracy of **86.47%**, which better reflects expected performance on real-world placement data.
+
+---
+
+## Deployed ML API
+
+The project includes a production-style FastAPI deployment for real-time inference.
+
+### Features
+
+* FastAPI REST API
+* Real-Time Placement Prediction
+* Pydantic Request Validation
+* Feature Transformation Pipeline
+* Logistic Regression Inference
+* Probability Score Output
+* PostgreSQL Prediction Logging
+* Docker Containerization
+* Environment Variable Configuration
+* Cloud Deployment using Render
+* Cloud PostgreSQL Database using Neon
+
+---
+
+## Project Structure
+
+```text
+Student_Placement_Analytics_and_Prediction/
+│
+├── data/
+│   ├── train.csv
+│   ├── test.csv
+│   ├── X_processed.csv
+│   └── y_processed.csv
+│
+├── images/
+│   ├── correlation-heatmap.png
+│   └── swagger-ui.png
+│
+├── models/
+│   ├── logistic_regression.joblib
+│   └── scaler.joblib
+│
+├── notebooks/
+│   ├── data_understanding.ipynb
+│   ├── eda.ipynb
+│   ├── preprocessing.ipynb
+│   └── model_building.ipynb
+│
+├── main.py
+├── database.py
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── .env.example
+├── .gitignore
+└── README.md
+```
+
+---
+
+## Tech Stack
+
+### Machine Learning
+
+* Python
+* NumPy
+* Pandas
 * Scikit-learn
-* Matplotlib, Seaborn
-* Jupyter Notebook
+
+### API Development
+
+* FastAPI
+* Pydantic
+* Uvicorn
+
+### Database
+
+* PostgreSQL
+* Neon
+
+### Deployment & DevOps
+
+* Docker
+* Docker Compose
+* Render
+* Git
+* GitHub
+
+### Visualization
+
+* Matplotlib
+* Seaborn
 
 ---
-Future enhancements include model deployment using Streamlit, evaluation on real-world placement datasets, and comparison with advanced ensemble methods such as Gradient Boosting and XGBoost.
+
+## Local Setup
+
+### Clone Repository
+
+```bash
+git clone https://github.com/VineethNaik14/Student_Placement_Analytics_and_Prediction.git
+cd Student_Placement_Analytics_and_Prediction
+```
+
+### Create Virtual Environment
+
+```bash
+conda create -n placement_pred python=3.12
+conda activate placement_pred
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Configure Environment Variables
+
+Create a `.env` file:
+
+```env
+DB_HOST=localhost
+DB_NAME=placement_db
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_PORT=5432
+```
+
+### Run FastAPI Locally
+
+```bash
+uvicorn main:app --reload
+```
+
+Open:
+
+```text
+http://localhost:8000/docs
+```
+
 ---
-## API Deployment (In Progress)
 
-A FastAPI-based inference service has been developed to serve real-time placement predictions.
+## Docker Setup
 
-Current Features:
-- FastAPI REST API
-- Pydantic request validation
-- Logistic Regression model loading via Joblib
-- Feature transformation and scaling
-- Real-time prediction endpoint
+Build and run using Docker Compose:
 
-Features to add:
-- PostgreSQL prediction logging
-- Docker containerization
-- Render deployment
-- GitHub Actions CI/CD
+```bash
+docker compose up
+```
 
-### Author : `Vineeth Naik`
+The API will be available at:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+## API Usage
+
+### Health Check
+
+```http
+GET /health
+```
+
+Response:
+
+```json
+{
+  "status": "Running"
+}
+```
+
+### Placement Prediction
+
+```http
+POST /predict
+```
+
+Example Request:
+
+```json
+{
+  "age": 21,
+  "gender": "Male",
+  "cgpa": 8.5,
+  "internships": 2,
+  "projects": 4,
+  "coding_skills": 8,
+  "communication_skills": 8,
+  "aptitude_test_score": 85,
+  "soft_skills_rating": 8,
+  "certifications": 2,
+  "backlogs": 0,
+  "degree": "B.Tech",
+  "branch": "CSE"
+}
+```
+
+Example Response:
+
+```json
+{
+  "prediction": "Placed",
+  "placement_probability": 0.9124
+}
+```
+
+---
+
+## Prediction Logging
+
+Every prediction request is stored in a PostgreSQL database with:
+
+* Prediction Result
+* Probability Score
+* Complete Input Payload
+* Timestamp
+
+This enables future auditing, monitoring, and analytics.
+
+---
+
+## Author
+
+**Vineeth Naik**
+
+---
+
+If you found this project useful, consider giving it a ⭐.
