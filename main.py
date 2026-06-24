@@ -5,31 +5,35 @@ import numpy as np
 from database import get_connection
 
 app = FastAPI()
+
 model = joblib.load("models/logistic_regression.joblib")
 scaler = joblib.load("models/scaler.joblib")
 
 
 class StudentInput(BaseModel):
-    age: int
+    age: int = Field(..., ge=16, le=35)
+
     gender: str
 
-    cgpa: float
-    internships: int
-    projects: int
+    cgpa: float = Field(..., ge=0, le=10)
 
-    coding_skills: float
-    communication_skills: float
-    aptitude_test_score: float
+    internships: int = Field(..., ge=0, le=20)
+    projects: int = Field(..., ge=0, le=100)
 
-    soft_skills_rating: float
-    certifications: int
-    backlogs: int
+    coding_skills: float = Field(..., ge=0, le=100)
+    communication_skills: float = Field(..., ge=0, le=100)
+    aptitude_test_score: float = Field(..., ge=0, le=100)
+
+    soft_skills_rating: float = Field(..., ge=0, le=5)
+
+    certifications: int = Field(..., ge=0, le=50)
+    backlogs: int = Field(..., ge=0, le=20)
 
     degree: str
     branch: str
 
 
-def save_prediction(prediction, probability):
+def save_prediction(prediction, probability, input_json):
 
     connection = get_connection()
 
@@ -38,11 +42,11 @@ def save_prediction(prediction, probability):
     cursor.execute(
         """
         INSERT INTO predictions
-        (prediction, probability)
+        (prediction, probability, input_json)
         VALUES
-        (%s, %s)
+        (%s, %s,%s)
         """,
-        (prediction, probability),
+        (prediction, probability, input_json),
     )
 
     connection.commit()
@@ -120,9 +124,12 @@ def predict(student: StudentInput):
 
     prediction_label = "Placed" if prediction == 1 else "Not Placed"
 
-    save_prediction(prediction_label, float(probability))
+    input_json = student.model_dump_json()
+
+    save_prediction(prediction_label, float(probability), input_json)
 
     return {
         "prediction": prediction_label,
         "placement_probability": round(float(probability), 4),
     }
+
