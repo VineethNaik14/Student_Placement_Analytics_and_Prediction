@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import joblib
-import numpy as np
 from database import get_connection
+from typing import Literal
 
 app = FastAPI()
 
@@ -13,7 +13,7 @@ scaler = joblib.load("models/scaler.joblib")
 class StudentInput(BaseModel):
     age: int = Field(..., ge=16, le=35)
 
-    gender: str
+    gender: Literal["Male", "Female"]
 
     cgpa: float = Field(..., ge=0, le=10)
 
@@ -29,9 +29,9 @@ class StudentInput(BaseModel):
     certifications: int = Field(..., ge=0)
     backlogs: int = Field(..., ge=0)
 
-    degree: str
-    branch: str
+    degree: Literal["B.Sc", "B.Tech", "BCA", "MCA"]
 
+    branch: Literal["CSE", "Civil", "ECE", "IT", "ME"]
 
 def save_prediction(prediction, probability, input_json):
 
