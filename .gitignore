@@ -9,3 +9,5 @@ data/*.csv
 env/
 
 .vscode/
+.env
+.env.docker
