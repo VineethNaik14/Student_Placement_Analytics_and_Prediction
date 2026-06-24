@@ -33,6 +33,7 @@ class StudentInput(BaseModel):
 
     branch: Literal["CSE", "Civil", "ECE", "IT", "ME"]
 
+
 def save_prediction(prediction, probability, input_json):
 
     connection = get_connection()
@@ -124,9 +125,9 @@ def predict(student: StudentInput):
 
     prediction_label = "Placed" if prediction == 1 else "Not Placed"
 
-    # input_json = student.model_dump_json()
+    input_json = student.model_dump_json()
 
-    # save_prediction(prediction_label, float(probability), input_json)
+    save_prediction(prediction_label, float(probability), input_json)
 
     return {
         "prediction": prediction_label,
